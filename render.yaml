@@ -12,10 +12,7 @@ services:
     region: singapore          # closest to India
     plan: free
     rootDir: .                 # repo root
-    buildCommand: |
-      npm ci                   && \
-      npm run build            && \
-      cd backend && npm ci
+    buildCommand: npm ci && npx ng build --configuration=production && cd backend && npm ci --omit=dev
     startCommand: node backend/server.js
     envVars:
       - key: NODE_ENV

@@ -12,7 +12,7 @@ services:
     region: singapore
     plan: free
     rootDir: .
-    buildCommand: npm ci && ./node_modules/.bin/ng build --configuration=production && cd backend && npm ci --omit=dev
+    buildCommand: npm install --include=dev && npm run build && cd backend && npm install
     startCommand: node backend/server.js
     envVars:
       - key: NODE_VERSION

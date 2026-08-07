@@ -95,13 +95,8 @@ CREATE TABLE invoice_items (
   amount DECIMAL(10,2) NOT NULL
 );
 
--- Seed default admin user (password: admin123)
-INSERT INTO users (name, username, password_hash, role)
-VALUES ('Admin', 'admin', '$2a$10$OXiYubwIsTJR5NlAenfWcOmxdKlhfN5GWQRu8R/HOMniH59FCKTB.', 'ADMIN');
-
--- Seed staff user (password: staff123)
-INSERT INTO users (name, username, password_hash, role)
-VALUES ('Billing Staff', 'staff', '$2a$10$roOXhQVZpkKyqLpPSVlEo.GBQPIvQ7/Lx4QqcFSpw9aAYW/WQbHBe', 'STAFF');
+-- Seed users: run setup-cloud-db.js instead (hashes are generated at runtime)
+-- To manually seed: use bcrypt.hash('admin123', 10) and insert the result
 
 -- Seed sample brokers
 INSERT INTO brokers (name, mobile, default_discount_pct) VALUES ('Rajan', '9876543210', 3.00);

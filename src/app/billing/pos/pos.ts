@@ -42,11 +42,6 @@ import { Product, Customer, Broker, CartItem } from '../../shared/models/models'
         <mat-toolbar color="primary">
           <mat-icon>point_of_sale</mat-icon>&nbsp;
           <span>New Bill — AmmanSilks</span>
-          <span class="spacer"></span>
-          <mat-form-field appearance="outline" class="date-field" style="margin-top:8px">
-            <mat-label style="color:#fff">Date</mat-label>
-            <input matInput type="date" [(ngModel)]="billDate" style="color:#fff">
-          </mat-form-field>
         </mat-toolbar>
 
         <div class="pos-body">
@@ -56,6 +51,15 @@ import { Product, Customer, Broker, CartItem } from '../../shared/models/models'
             <mat-card class="section-card">
               <mat-card-title><mat-icon>person</mat-icon> Customer Details</mat-card-title>
               <mat-card-content>
+                <!-- Bill Date row -->
+                <div class="row-2">
+                  <mat-form-field appearance="outline" class="flex-1">
+                    <mat-label>Bill Date</mat-label>
+                    <input matInput type="date" [(ngModel)]="billDate">
+                    <mat-icon matSuffix>calendar_today</mat-icon>
+                  </mat-form-field>
+                  <div class="flex-1"></div>
+                </div>
                 <div class="row-2">
                   <mat-form-field appearance="outline" class="flex-1">
                     <mat-label>Customer Name *</mat-label>

@@ -15,6 +15,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Sidebar } from '../../shared/sidebar/sidebar';
@@ -33,7 +35,8 @@ import { Product, Customer, Broker, CartItem } from '../../shared/models/models'
     MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule,
     MatButtonModule, MatIconModule, MatSelectModule, MatTableModule,
     MatDividerModule, MatAutocompleteModule, MatSnackBarModule,
-    MatRadioModule, MatTooltipModule
+    MatRadioModule, MatTooltipModule,
+    MatDatepickerModule, MatNativeDateModule
   ],
   template: `
     <div class="app-layout">
@@ -55,8 +58,9 @@ import { Product, Customer, Broker, CartItem } from '../../shared/models/models'
                 <div class="row-2">
                   <mat-form-field appearance="outline" class="flex-1">
                     <mat-label>Bill Date</mat-label>
-                    <input matInput type="date" [(ngModel)]="billDate">
-                    <mat-icon matSuffix>calendar_today</mat-icon>
+                    <input matInput [matDatepicker]="billPicker" [(ngModel)]="billDate" placeholder="DD/MM/YYYY" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="billPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #billPicker></mat-datepicker>
                   </mat-form-field>
                   <div class="flex-1"></div>
                 </div>
@@ -376,7 +380,7 @@ export class Pos implements OnInit {
   netPayable = 0;
   paymentMode = 'CASH';
   saving = false;
-  billDate = (() => { const n = new Date(); return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`; })();
+  billDate: Date = new Date();
 
   constructor(
     public auth: AuthService,
@@ -478,7 +482,7 @@ export class Pos implements OnInit {
     if (!this.customer.name || !this.customer.mobile || this.cart.length === 0) return;
     this.saving = true;
     const invoice = {
-      date: this.billDate,
+      date: (() => { const d = this.billDate; return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })(),
       customer: this.customer,
       items: this.cart.map(i => ({
         productId: i.product.id, productName: i.product.name,
@@ -511,8 +515,7 @@ export class Pos implements OnInit {
   clearAll(): void {
     this.cart = [];
     this.customer = { name: '', mobile: '', email: '', address: '' };
-    const n = new Date();
-    this.billDate = `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;
+    this.billDate = new Date();
     this.customerDiscValue = 0; this.customerDiscAmt = 0;
     this.brokerDiscValue = 0; this.brokerDiscAmt = 0;
     this.selectedBroker = null;

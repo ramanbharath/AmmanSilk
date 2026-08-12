@@ -148,11 +148,16 @@ import { Product, Customer, Broker, CartItem } from '../../shared/models/models'
                   </ng-container>
                   <ng-container matColumnDef="rate">
                     <th mat-header-cell *matHeaderCellDef>Rate (₹)</th>
-                    <td mat-cell *matCellDef="let item">{{ item.rate | number }}</td>
+                    <td mat-cell *matCellDef="let item">
+                      <input class="rate-input" type="number" min="0"
+                             [(ngModel)]="item.rate"
+                             (input)="changeRate(item)"
+                             (blur)="changeRate(item)">
+                    </td>
                   </ng-container>
                   <ng-container matColumnDef="amount">
                     <th mat-header-cell *matHeaderCellDef>Amount (₹)</th>
-                    <td mat-cell *matCellDef="let item"><strong>{{ item.amount | number }}</strong></td>
+                    <td mat-cell *matCellDef="let item"><strong>₹{{ item.amount | number:'1.2-2' }}</strong></td>
                   </ng-container>
                   <ng-container matColumnDef="remove">
                     <th mat-header-cell *matHeaderCellDef></th>
@@ -328,6 +333,8 @@ import { Product, Customer, Broker, CartItem } from '../../shared/models/models'
     .cart-table { width: 100%; }
     .qty-control { display: flex; align-items: center; gap: 4px; }
     .qty-control span { min-width: 24px; text-align: center; font-weight: 600; }
+    .rate-input { width: 90px; padding: 4px 8px; border: 1px solid #bbb; border-radius: 4px; font-size: 14px; text-align: right; outline: none; }
+    .rate-input:focus { border-color: #6200ea; box-shadow: 0 0 0 2px rgba(98,0,234,0.15); }
 
     /* Summary */
     .billing-summary { height: fit-content; border-radius: 8px; position: sticky; top: 0; }
@@ -424,6 +431,12 @@ export class Pos implements OnInit {
     item.qty = Math.max(1, item.qty + delta);
     item.amount = item.qty * item.rate;
     this.cart = [...this.cart]; // trigger mat-table change detection
+    this.recalculate();
+  }
+
+  changeRate(item: CartItem): void {
+    if (!item.rate || item.rate < 0) item.rate = 0;
+    item.amount = item.qty * item.rate;
     this.recalculate();
   }
 

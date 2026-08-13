@@ -67,12 +67,13 @@ import { Product, Customer, Broker, CartItem } from '../../shared/models/models'
                 <div class="row-2">
                   <mat-form-field appearance="outline" class="flex-1">
                     <mat-label>Customer Name *</mat-label>
-                    <input matInput [(ngModel)]="customer.name" placeholder="Enter name">
+                    <input matInput [(ngModel)]="customer.name" placeholder="Enter name"
+                           autocomplete="off">
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="flex-1">
                     <mat-label>Mobile * (10 digits)</mat-label>
                     <input matInput [(ngModel)]="customer.mobile" placeholder="10-digit mobile"
-                           maxlength="10" (blur)="lookupCustomer()">
+                           maxlength="10" autocomplete="off" (blur)="lookupCustomer()">
                     <mat-hint *ngIf="customer.mobile && customer.mobile.length !== 10" class="warn-hint">
                       Must be exactly 10 digits
                     </mat-hint>
@@ -81,11 +82,12 @@ import { Product, Customer, Broker, CartItem } from '../../shared/models/models'
                 <div class="row-2">
                   <mat-form-field appearance="outline" class="flex-1">
                     <mat-label>Email (optional)</mat-label>
-                    <input matInput type="email" [(ngModel)]="customer.email" placeholder="customer@email.com">
+                    <input matInput type="email" [(ngModel)]="customer.email"
+                           placeholder="customer@email.com" autocomplete="off">
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="flex-1">
                     <mat-label>Address (optional)</mat-label>
-                    <input matInput [(ngModel)]="customer.address">
+                    <input matInput [(ngModel)]="customer.address" autocomplete="off">
                   </mat-form-field>
                 </div>
               </mat-card-content>

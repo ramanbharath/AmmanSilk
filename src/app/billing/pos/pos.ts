@@ -406,6 +406,16 @@ export class Pos implements OnInit {
     if (this.auth.isAdmin) {
       this.brokerSvc.getAll().subscribe(b => this.brokers = b);
     }
+    // Pre-fill customer fields from the customer record named 'admin'
+    this.customerSvc.search('admin').subscribe(results => {
+      const adminCustomer = results.find(c => c.name.toLowerCase() === 'admin');
+      if (adminCustomer) {
+        this.customer.name   = adminCustomer.name;
+        this.customer.mobile = adminCustomer.mobile;
+        this.customer.email  = adminCustomer.email  || '';
+        this.customer.address = adminCustomer.address || '';
+      }
+    });
   }
 
   filterProducts(): void {
@@ -530,6 +540,16 @@ export class Pos implements OnInit {
   clearAll(): void {
     this.cart = [];
     this.customer = { name: '', mobile: '', email: '', address: '' };
+    // Restore admin customer pre-fill
+    this.customerSvc.search('admin').subscribe(results => {
+      const adminCustomer = results.find(c => c.name.toLowerCase() === 'admin');
+      if (adminCustomer) {
+        this.customer.name    = adminCustomer.name;
+        this.customer.mobile  = adminCustomer.mobile;
+        this.customer.email   = adminCustomer.email  || '';
+        this.customer.address = adminCustomer.address || '';
+      }
+    });
     this.billDate = new Date();
     this.customerDiscValue = 0; this.customerDiscAmt = 0;
     this.brokerDiscValue = 0; this.brokerDiscAmt = 0;
